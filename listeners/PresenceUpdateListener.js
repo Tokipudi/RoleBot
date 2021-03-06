@@ -1,4 +1,5 @@
 const { Listener } = require('discord-akairo');
+const { hasRichPresence } = require('../util/PresenceUtil');
 
 class PresenceUpdateListener extends Listener {
 	constructor() {
@@ -13,17 +14,19 @@ class PresenceUpdateListener extends Listener {
 		let guild = newPresence.guild;
 
 		for (const activity of newPresence.activities) {
-			if (activity.type !== 'PLAYING' || !activity.name) continue;
-
-			let role = await guild.roles.cache.find(role => role.name === this.name, activity);
+			if (activity.type !== 'PLAYING' || !activity.name || !hasRichPresence(activity)) continue;
+			
+			// TODO Find out why the fetch is needed to reload the cache
+			let roles = await guild.roles.fetch();
+			let role = await roles.cache.find(r => r.name === activity.name);
 
 			if (role == null) {
 				role = await guild.roles.create({
 					data: {
 						name: activity.name,
-						color: 'BLUE'
+						color: 'GREY'
 					},
-					reason: 'Role created via PresenceUpdateListener'
+					reason: `Role ${activity.name} created when ${member.user.tag} played it`
 				});
 			}
 
