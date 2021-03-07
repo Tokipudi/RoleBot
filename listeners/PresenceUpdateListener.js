@@ -15,7 +15,7 @@ class PresenceUpdateListener extends Listener {
 
 		for (const activity of newPresence.activities) {
 			if (activity.type !== 'PLAYING' || !activity.name || !hasRichPresence(activity)) continue;
-			
+
 			// TODO Find out why the fetch is needed to reload the cache
 			let roles = await guild.roles.fetch();
 			let role = await roles.cache.find(r => r.name === activity.name);
@@ -30,7 +30,7 @@ class PresenceUpdateListener extends Listener {
 				});
 			}
 
-			if (!member.roles.cache.has(role.id)) {
+			if (!member.roles.cache.has(role.id) && roles.cache.highest.id != role.id) {
 				member.roles.add(role)
 					.finally(console.log(`Role ${role.name} successfully added to user ${member.user.tag}`))
 					.catch(console.error);
