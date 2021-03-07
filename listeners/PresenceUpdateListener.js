@@ -30,7 +30,7 @@ class PresenceUpdateListener extends Listener {
 				});
 			}
 
-			if (!member.roles.cache.has(role.id) && roles.cache.highest.id != role.id) {
+			if (!member.roles.cache.has(role.id) && (roles.cache.highest && roles.cache.highest.id != role.id)) {
 				member.roles.add(role)
 					.finally(console.log(`Role ${role.name} successfully added to user ${member.user.tag}`))
 					.catch(console.error);
