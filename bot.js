@@ -1,10 +1,15 @@
 const { AkairoClient, CommandHandler, InhibitorHandler, ListenerHandler } = require('discord-akairo');
-const config = require('./config.json');
+let config;
+try {
+	config = require('./config.json');
+} catch(e) {
+	config = process.env;
+}
 
 class MyClient extends AkairoClient {
     constructor() {
         super({
-            ownerID: config.ownerID,
+            ownerID: config.OWNER_ID,
         }, {
             disableMentions: 'everyone'
         });
@@ -35,4 +40,4 @@ class MyClient extends AkairoClient {
 }
 
 const client = new MyClient();
-client.login(config.token);
+client.login(config.TOKEN);
