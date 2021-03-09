@@ -2,14 +2,21 @@
   "name": "kelevra",
   "version": "0.0.1",
   "description": "A simple bot based on Akairo",
-  "main": "bot.js",
+  "main": "src/index.js",
   "dependencies": {
+    "chalk": "^4.1.0",
     "discord-akairo": "^8.1.0",
     "discord.js": "^12.5.1",
-    "sqlite": "^4.0.19",
-    "sequelize": "^6.5.0"
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "he": "^1.2.0",
+    "sequelize": "^6.5.0",
+    "sqlite": "^4.0.19"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "@types/node": "^14.14.32",
+    "typescript": "^4.2.3"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

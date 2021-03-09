@@ -1,17 +1,16 @@
-const { Inhibitor } = require('discord-akairo');
+import { Inhibitor } from 'discord-akairo';
+import { Message } from 'discord.js';
 
-class BlacklistInhibitor extends Inhibitor {
+export default class extends Inhibitor {
     constructor() {
         super('blacklist', {
             reason: 'blacklist'
         })
     }
 
-    exec(message) {
+    exec(message: Message) {
         // He's a meanie!
         const blacklist = ['123456'];
         return blacklist.includes(message.author.id);
     }
 }
-
-module.exports = BlacklistInhibitor;

@@ -1,7 +1,8 @@
-const { Listener } = require('discord-akairo');
-const { hasRichPresence } = require('../util/PresenceUtil');
+import { Listener } from 'discord-akairo';
+import { Presence } from 'discord.js';
+import { PresenceUtil } from '../utils/PresenceUtil';
 
-class PresenceUpdateListener extends Listener {
+export default class extends Listener {
 	constructor() {
 		super('presenceUpdate', {
 			emitter: 'client',
@@ -9,12 +10,12 @@ class PresenceUpdateListener extends Listener {
 		});
 	}
 
-	async exec(oldPresence, newPresence) {
+	async exec(oldPresence: Presence, newPresence: Presence) {
 		let member = newPresence.member;
 		let guild = newPresence.guild;
 
 		for (const activity of newPresence.activities) {
-			if (activity.type !== 'PLAYING' || !activity.name || !hasRichPresence(activity)) continue;
+			if (activity.type !== 'PLAYING' || !activity.name || !PresenceUtil.hasRichPresence(activity)) continue;
 
 			// TODO Find out why the fetch is needed to reload the cache
 			let roles = await guild.roles.fetch();
@@ -32,11 +33,9 @@ class PresenceUpdateListener extends Listener {
 
 			if (!member.roles.cache.has(role.id)) {
 				member.roles.add(role)
-					.finally(console.log(`Role ${role.name} successfully added to user ${member.user.tag}`))
+					.finally(() => console.log(`Role ${role.name} successfully added to user ${member.user.tag}`))
 					.catch(console.error);
 			}
 		}
 	}
 }
-
-module.exports = PresenceUpdateListener;
